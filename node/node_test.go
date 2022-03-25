@@ -397,8 +397,9 @@ func TestMaxTxsProposalBlockSize(t *testing.T) {
 	)
 
 	// fill the mempool with one txs just below the maximum size
-	txLength := int(types.MaxDataBytesNoEvidence(maxBytes, 1))
-	tx := tmrand.Bytes(txLength - 4) // to account for the varint
+	mb, err := types.MaxDataBytesNoEvidence(maxBytes, 1)
+	require.NoError(t, err)
+	tx := tmrand.Bytes(int(mb) - 4) // to account for the varint
 	err = mp.CheckTx(ctx, tx, nil, mempool.TxInfo{})
 	assert.NoError(t, err)
 
@@ -466,8 +467,9 @@ func TestMaxProposalBlockSize(t *testing.T) {
 	)
 
 	// fill the mempool with one txs just below the maximum size
-	txLength := int(types.MaxDataBytesNoEvidence(maxBytes, types.MaxVotesCount))
-	tx := tmrand.Bytes(txLength - 6) // to account for the varint
+	mb, err := types.MaxDataBytesNoEvidence(maxBytes, types.MaxVotesCount)
+	require.NoError(t, err)
+	tx := tmrand.Bytes(int(mb) - 6) // to account for the varint
 	err = mp.CheckTx(ctx, tx, nil, mempool.TxInfo{})
 	assert.NoError(t, err)
 	// now produce more txs than what a normal block can hold with 10 smaller txs

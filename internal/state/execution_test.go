@@ -620,8 +620,13 @@ func TestPrepareProposalAppMaxBytes(t *testing.T) {
 			conesensusMaxGas:   100,
 			conesensusMaxBytes: 10000000,
 
-			expectedMaxBytesCalled: types.MaxDataBytes(10000000, 0, 1),
-			expectedMaxGasCalled:   100,
+			expectedMaxBytesCalled: func(t *testing.T) int64 {
+				res, err := types.MaxDataBytes(10000000, 0, 1)
+				require.NoError(t, err)
+				return res
+			}(t),
+
+			expectedMaxGasCalled: 100,
 		},
 		{
 			name:               "Local PrepareProposalTxBytes set to 1000",

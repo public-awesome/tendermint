@@ -110,7 +110,10 @@ func (blockExec *BlockExecutor) CreateProposalBlock(
 	maxGas := state.ConsensusParams.Block.MaxGas
 
 	evidence, evSize := blockExec.evpool.PendingEvidence(state.ConsensusParams.Evidence.MaxBytes)
-	maxDataBytes := types.MaxDataBytes(state.ConsensusParams.Block.MaxBytes, evSize, state.Validators.Size())
+	maxDataBytes, err := types.MaxDataBytes(state.ConsensusParams.Block.MaxBytes, evSize, state.Validators.Size())
+	if err != nil {
+		panic(err)
+	}
 
 	var txs types.Txs
 	switch appMaxBytes {
