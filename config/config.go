@@ -1080,6 +1080,9 @@ func (cfg *ConsensusConfig) ValidateBasic() error {
 	if cfg.CreateEmptyBlocksInterval < 0 {
 		return errors.New("create-empty-blocks-interval can't be negative")
 	}
+	if cfg.PrepareProposalTxBytes < -1 {
+		return errors.New("prepare-proposal-tx-bytes must be greater than -1")
+	}
 	if cfg.PeerGossipSleepDuration < 0 {
 		return errors.New("peer-gossip-sleep-duration can't be negative")
 	}
