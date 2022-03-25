@@ -615,20 +615,6 @@ func TestPrepareProposalAppMaxBytes(t *testing.T) {
 		expectedMaxGasCalled   int64
 	}{
 		{
-			name:               "Local PrepareProposalTxBytes set to 0",
-			nodeMaxBytes:       0,
-			conesensusMaxGas:   100,
-			conesensusMaxBytes: 10000000,
-
-			expectedMaxBytesCalled: func(t *testing.T) int64 {
-				res, err := types.MaxDataBytes(10000000, 0, 1)
-				require.NoError(t, err)
-				return res
-			}(t),
-
-			expectedMaxGasCalled: 100,
-		},
-		{
 			name:               "Local PrepareProposalTxBytes set to 1000",
 			nodeMaxBytes:       5000000,
 			conesensusMaxGas:   100,
@@ -645,6 +631,19 @@ func TestPrepareProposalAppMaxBytes(t *testing.T) {
 
 			expectedMaxBytesCalled: -1,
 			expectedMaxGasCalled:   -1,
+		},
+		{
+			name:               "Local PrepareProposalTxBytes smaller than block data",
+			nodeMaxBytes:       50000,
+			conesensusMaxGas:   100,
+			conesensusMaxBytes: 10000000,
+
+			expectedMaxBytesCalled: func(t *testing.T) int64 {
+				res, err := types.MaxDataBytes(10000000, 0, 1)
+				require.NoError(t, err)
+				return res
+			}(t),
+			expectedMaxGasCalled: 100,
 		},
 	} {
 		t.Run(tc.name, func(t *testing.T) {

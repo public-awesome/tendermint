@@ -984,10 +984,12 @@ type ConsensusConfig struct {
 	// PrepareProposalTxBytes determines how many bytes will be sent to the application
 	// duration the PreparePropsal call.
 	//
-	// If this field is set to 0, then the number of bytes sent to the application
-	// will be determined by the value of ConsensusParams.Block.MaxBytes.
 	// If this field is set to -1 then entire contents of the mempool will be sent
 	// to the application during PrepareProposal.
+	// If the value of PrepareProposalTxBytes is less than the block transaction data size
+	// determined using the ConsensusParams.Block.MaxBytes value, then the number and
+	// size of the transactions sent to the application during PrepareProposal
+	// will be instead determined using the value of ConsensusParams.Block.MaxBytes.
 	PrepareProposalTxBytes int64 `mapstructure:"prepare-proposal-tx-bytes"`
 
 	// Reactor sleep duration parameters

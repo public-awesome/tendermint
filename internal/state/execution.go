@@ -116,10 +116,10 @@ func (blockExec *BlockExecutor) CreateProposalBlock(
 	}
 
 	var txs types.Txs
-	switch appMaxBytes {
-	case -1:
+	switch {
+	case appMaxBytes == -1:
 		txs = blockExec.mempool.ReapMaxBytesMaxGas(-1, -1)
-	case 0:
+	case appMaxBytes < maxDataBytes:
 		txs = blockExec.mempool.ReapMaxBytesMaxGas(maxDataBytes, maxGas)
 	default:
 		txs = blockExec.mempool.ReapMaxBytesMaxGas(appMaxBytes, -1)
