@@ -119,10 +119,10 @@ func (blockExec *BlockExecutor) CreateProposalBlock(
 	switch {
 	case appMaxBytes == -1:
 		txs = blockExec.mempool.ReapMaxBytesMaxGas(-1, -1)
-	case appMaxBytes < maxDataBytes:
-		txs = blockExec.mempool.ReapMaxBytesMaxGas(maxDataBytes, maxGas)
-	default:
+	case appMaxBytes > maxDataBytes:
 		txs = blockExec.mempool.ReapMaxBytesMaxGas(appMaxBytes, -1)
+	default:
+		txs = blockExec.mempool.ReapMaxBytesMaxGas(maxDataBytes, maxGas)
 	}
 
 	block := state.MakeBlock(height, txs, commit, evidence, proposerAddr)
