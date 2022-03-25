@@ -981,9 +981,14 @@ type ConsensusConfig struct {
 	CreateEmptyBlocks         bool          `mapstructure:"create-empty-blocks"`
 	CreateEmptyBlocksInterval time.Duration `mapstructure:"create-empty-blocks-interval"`
 
-	// PrepareProposalMaxBytes determines how many bytes will be sent to the application
+	// PrepareProposalTxBytes determines how many bytes will be sent to the application
 	// duration the PreparePropsal call.
-	PrepareProposalTxBytes int64 `mapstructure:"prepare-proposal-max-bytes"`
+	//
+	// If this field is set to 0, then the number of bytes sent to the application
+	// will be determined by the value of ConsensusParams.Block.MaxBytes.
+	// If this field is set to -1 then entire contents of the mempool will be sent
+	// to the application during PrepareProposal.
+	PrepareProposalTxBytes int64 `mapstructure:"prepare-proposal-tx-bytes"`
 
 	// Reactor sleep duration parameters
 	PeerGossipSleepDuration     time.Duration `mapstructure:"peer-gossip-sleep-duration"`
