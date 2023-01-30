@@ -419,8 +419,8 @@ func (p *peer) Set(key string, data interface{}) {
 // hasChannel returns true if the peer reported
 // knowing about the given chID.
 func (p *peer) hasChannel(chID byte) bool {
-	for i := 0; i < len(p.channels); i++ {
-		if p.channels[i] == chID {
+	for _, ch := range p.channels {
+		if ch == chID {
 			return true
 		}
 	}
