@@ -419,20 +419,11 @@ func (p *peer) Set(key string, data interface{}) {
 // hasChannel returns true if the peer reported
 // knowing about the given chID.
 func (p *peer) hasChannel(chID byte) bool {
-	for _, ch := range p.channels {
-		if ch == chID {
+	for i := 0; i < len(p.channels); i++ {
+		if p.channels[i] == chID {
 			return true
 		}
 	}
-	// NOTE: probably will want to remove this
-	// but could be helpful while the feature is new
-	p.Logger.Debug(
-		"Unknown channel for peer",
-		"channel",
-		chID,
-		"channels",
-		p.channels,
-	)
 	return false
 }
 
